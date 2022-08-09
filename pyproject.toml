@@ -1,0 +1,58 @@
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.0"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rpki-aspa-test-data"
+description = "Generate test objects for RPKI ASPA profile implementations"
+readme = "README.md"
+requires-python = ">=3.9"
+license.file = "LICENSE"
+authors = [
+    {name = "Ben Maddison", email = "benm@workonline.africa"}
+]
+keywords = ["rpki", "draft-ietf-sidrops-aspa-profile"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Telecommunications Industry",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Internet",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+dependencies = [
+    "rpkimancer-aspa>=0.9.0, <0.10.0",
+    "PyYAML>=6.0.0, <7.0",
+    "jsonschema>=4.9.0, <5.0"
+]
+dynamic = ["version"]
+
+[project.urls]
+"Home" = "https://github.com/benmaddison/rpki-aspa-test-data"
+"Documentation" = "https://benmaddison.github.io/rpki-aspa-test-data"
+"Bug Tracker" = "https://github.com/benmaddison/rpki-aspa-test-data/issues"
+
+[tool.setuptools.packages.find]
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+
+[tool.mypy]
+strict = true
+pretty = true
+
+[tool.mypy-rpkimancer.asn1.mod._mod]
+follow_imports = "silent"
+

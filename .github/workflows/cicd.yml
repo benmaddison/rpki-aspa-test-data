@@ -1,0 +1,75 @@
+name: "CI/CD"
+on:
+  - push
+  - pull_request
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: safety check
+        uses: ./.github/actions/pipenv
+        with:
+          pipenv: check
+          install-args: --dev
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: lint
+        uses: ./.github/actions/pipenv
+        with:
+          pipenv: run lint
+          install-args: --dev
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: typecheck
+        uses: ./.github/actions/pipenv
+        with:
+          pipenv: run typecheck
+          install-args: --dev
+  generate:
+    needs:
+      - safety
+      - lint
+      - typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: generate
+        uses: ./.github/actions/pipenv
+        with:
+          pipenv: run generate
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: output
+          path: "./target"
+          if-no-files-found: error
+  release:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs:
+      - generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: output
+      - name: create tarball
+        run: tar -zcvf output.tar.gz target/
+      - name: publish release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: output.tar.gz
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+

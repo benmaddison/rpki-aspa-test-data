@@ -1,0 +1,38 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+rpki-aspa-test-data = {editable = true, path = "."}
+
+[dev-packages]
+mypy = "*"
+types-pyyaml = "*"
+types-jsonschema = "*"
+flake8 = "*"
+flake8-bandit = "*"
+flake8-bugbear = "*"
+flake8-commas = "*"
+flake8-docstrings = "*"
+flake8-eradicate = "*"
+flake8-import-order = "*"
+pep8-naming = "*"
+radon = "*"
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+generate = "python -m rpki_aspa_test_data"
+inspect = "rpkincant perceive"
+typecheck = "mypy -p rpki_aspa_test_data"
+lint = """
+flake8 ./rpki_aspa_test_data \
+    --max-line-length 79 \
+    --doctests \
+    --docstring-convention pep257 \
+    --radon-max-cc 10 \
+    --statistics \
+    --count \
+"""

@@ -1,0 +1,35 @@
+name: pipenv
+description: "set up and run pipenv"
+inputs:
+  pipenv:
+    description: pipenv subcommand to execute
+    required: true
+  args:
+    description: args to pass to pipenv subcommand
+    required: false
+    default: ""
+  install-args:
+    description: args to pass to pipenv install command
+    required: false
+    default: ""
+  python-version:
+    description: python version to use
+    required: false
+    default: "3.9"
+runs:
+  using: composite
+  steps:
+    - name: setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pipenv
+    - name: install pipenv
+      shell: bash
+      run: "curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python"
+    - name: install dependencies
+      shell: bash
+      run: pipenv install ${{ inputs.install-args }}
+    - name: run pipenv command
+      shell: bash
+      run: pipenv ${{ inputs.pipenv }} ${{ inputs.args }}

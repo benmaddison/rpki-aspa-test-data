@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "test cases specification schema",
+    "type" : "array",
+    "items": {"$ref": "#/definitions/case_spec"},
+    "uniqueItems": true,
+    "additionalItems": false,
+    "definitions": {
+        "case_spec": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "pattern": "^[a-z]+(-[a-z0-9]+)*$"
+                },
+                "valid": {"type": "boolean"},
+                "desc": {"type": "string"},
+                "customer_asid": {"$ref": "#/definitions/asid"},
+                "providers": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/provider_spec"},
+                    "additionalItems": false
+                }
+            },
+            "additionalProperties": false,
+            "required": ["name", "valid", "customer_asid", "providers"]
+        },
+        "asid": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+        },
+        "provider_spec": {
+            "type": "object",
+            "properties": {
+                "provider_asid": {"$ref": "#/definitions/asid"},
+                "afi_limit": {"enum": ["ipv4", "ipv6", null]}
+            },
+            "additionalProperties": false,
+            "required": ["provider_asid"]
+        }
+    }
+}

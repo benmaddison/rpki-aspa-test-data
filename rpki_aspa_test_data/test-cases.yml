@@ -1,0 +1,59 @@
+- name: nil
+  desc: >
+    Null ASPA, containing only AS0 in providers
+  valid: true
+  customer_asid: 65000
+  providers:
+    - provider_asid: 0
+- name: single
+  desc: >
+    Trivial ASPA authorising a single provider
+  valid: true
+  customer_asid: 65001
+  providers:
+    - provider_asid: 65002
+- name: multi
+  desc: >
+    ASPA with multiple authorised providers, correctly ordered
+  valid: true
+  customer_asid: 65003
+  providers:
+    - provider_asid: 65004
+    - provider_asid: 65005
+- name: multi-afi
+  desc: >
+    ASPA with multiple providers and limited AFI scope, correctly ordered
+  valid: true
+  customer_asid: 65004
+  providers:
+    - provider_asid: 65005
+    - provider_asid: 65006
+      afi_limit: ipv4
+    - provider_asid: 65007
+      afi_limit: ipv6
+- name: unsorted-providers
+  desc: >
+    ASPA with multiple authorised providers, incorrectly ordered
+  valid: false
+  customer_asid: 65005
+  providers:
+    - provider_asid: 65007
+    - provider_asid: 65008
+- name: duplicate-providers
+  desc: >
+    ASPA authorising a single provider, incorrectly duplicated
+  valid: false
+  customer_asid: 65006
+  providers:
+    - provider_asid: 65007
+    - provider_asid: 65007
+- name: afi-overlap
+  desc: >
+    ASPA authorising a single provider with multiple overlaping AFI scopes,
+    incorrectly duplicated
+  valid: false
+  customer_asid: 65007
+  providers:
+    - provider_asid: 65008
+    - provider_asid: 65008
+      afi_limit: ipv4
