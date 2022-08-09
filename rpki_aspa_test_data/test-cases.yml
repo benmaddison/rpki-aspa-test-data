@@ -38,7 +38,7 @@
   customer_asid: 65005
   providers:
     - provider_asid: 65007
-    - provider_asid: 65008
+    - provider_asid: 65006
 - name: duplicate-providers
   desc: >
     ASPA authorising a single provider, incorrectly duplicated
