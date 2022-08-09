@@ -64,6 +64,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: output
+          path: target
       - name: create tarball
         run: tar -zcvf output.tar.gz target/
       - name: publish release
